@@ -179,13 +179,15 @@
                                     }
                                 }).then(function (response) {
                                     if (!response.ok) {
-                                        throw new Error(response.statusText);
+                                        throw new Error(response.json());
                                     }
                                     return response.json();
                                 }).catch(function (error) {
-                                    ui.confirmMessage(error.message, error.message, function () {});
+                                    ui.confirmMessage('Failed to move', 'Failed to move: '+error, function () {});
                                 }).then(function (res) {
-                                    ui.confirmReload(res, 'success');
+                                    if(res){
+                                        ui.confirmReload(res, 'success');
+                                    }
                                 });
                                 evt.target.classList.remove('sling-cms-droptarget__is-over');
                             }

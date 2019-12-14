@@ -71,7 +71,7 @@
                         window.top.location.reload();
                     });
                 } else {
-                    Sling.CMS.ui.confirmMessage(msg, res.title, function () {
+                    Sling.CMS.ui.confirmMessage(msg, res ? res.title : '', function () {
                         Sling.CMS.ui.reloadContext();
                     });
                 }
