@@ -17,26 +17,30 @@
  * under the License.
  */
 /* eslint-env browser, es6 */
-(function (rava) {
+(function (rava, Sling) {
     'use strict';
     
     rava.bind('.job-properties-container', {
         callbacks : {
             created :  function () {
-                var container = this;
-                document.querySelector(container.dataset.source).addEventListener('change', function () {
-                    var sourceSelect = this,
-                        config = this.value;
+                const container = this;
+                document.querySelector(container.dataset.source).addEventListener('change', async function () {
+                    const sourceSelect = this;
+                    const config = this.value;
                     sourceSelect.disabled = true;
                     container.innerHTML = '';
-                    fetch(container.dataset.path + config).then(function (response) {
-                        return response.text();
-                    }).then(function (formHtml) {
+                    
+                    const response = await fetch(container.dataset.path + config);
+                    if(response.ok){
+                        const formHtml = await response.text();
                         container.innerHTML = formHtml;
                         sourceSelect.disabled = false;
-                    });
+                    } else {
+                        Sling.CMS.ui.confirmMessage(response.status, response.statusText, function () {});
+                    }
+                    
                 });
             }
         }
     });
-}(window.rava = window.rava || {}));
+}(window.rava = window.rava || {}, window.Sling = window.Sling || {}));
