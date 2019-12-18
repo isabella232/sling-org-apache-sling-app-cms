@@ -33,9 +33,15 @@ rava.bind('input.pathfield', {
           if (term === '/') {
             term = base;
           }
-          fetch(`/bin/cms/paths?path=${encodeURIComponent(term)}&type=${encodeURIComponent(type)}`).then((resp) => resp.json()).then((data) => {
-            response(data);
-          });
+          fetch(
+            `/bin/cms/paths?path=${encodeURIComponent(
+              term,
+            )}&type=${encodeURIComponent(type)}`,
+          )
+            .then((resp) => resp.json())
+            .then((data) => {
+              response(data);
+            });
         },
       });
     },
@@ -57,18 +63,25 @@ rava.bind('.search-select-button', {
       if (Sling.CMS.pathfield instanceof HTMLInputElement) {
         Sling.CMS.pathfield.value = this.dataset.path;
       } else {
-        Sling.CMS.pathfield.postMessage({
-          action: 'slingcms.setpath',
-          path,
-        }, window.location.origin);
+        Sling.CMS.pathfield.postMessage(
+          {
+            action: 'slingcms.setpath',
+            path,
+          },
+          window.location.origin,
+        );
       }
       this.closest('.modal').remove();
     },
   },
 });
 
-window.addEventListener('message', (event) => {
-  if (event.data.action === 'slingcms.setpath') {
-    Sling.CMS.pathfield.value = event.data.path;
-  }
-}, false);
+window.addEventListener(
+  'message',
+  (event) => {
+    if (event.data.action === 'slingcms.setpath') {
+      Sling.CMS.pathfield.value = event.data.path;
+    }
+  },
+  false,
+);
