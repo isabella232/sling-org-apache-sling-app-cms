@@ -16,31 +16,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-/* eslint-env browser, es6 */
-(function (rava, Sling) {
-    'use strict';
-    
-    rava.bind('.job-properties-container', {
-        callbacks : {
-            created :  function () {
-                const container = this;
-                document.querySelector(container.dataset.source).addEventListener('change', async function () {
-                    const sourceSelect = this;
-                    const config = this.value;
-                    sourceSelect.disabled = true;
-                    container.innerHTML = '';
-                    
-                    const response = await fetch(container.dataset.path + config);
-                    if(response.ok){
-                        const formHtml = await response.text();
-                        container.innerHTML = formHtml;
-                        sourceSelect.disabled = false;
-                    } else {
-                        Sling.CMS.ui.confirmMessage(response.status, response.statusText, function () {});
-                    }
-                    
-                });
-            }
+
+rava.bind('.job-properties-container', {
+  callbacks: {
+    created() {
+      const container = this;
+      async function handleChange() {
+        const sourceSelect = this;
+        const config = this.value;
+        sourceSelect.disabled = true;
+        container.innerHTML = '';
+
+        const response = await fetch(container.dataset.path + config);
+        if (Sling.CMS.utils.ok(response)) {
+          const formHtml = await response.text();
+          container.innerHTML = formHtml;
+          sourceSelect.disabled = false;
         }
-    });
-}(window.rava = window.rava || {}, window.Sling = window.Sling || {}));
+      }
+      document.querySelector(container.dataset.source).addEventListener('change', handleChange);
+    },
+  },
+});
