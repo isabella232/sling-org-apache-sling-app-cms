@@ -257,7 +257,7 @@ if (!window.CMSEditor) {
         ed.addEventListener('dragend', deactivateTargets);
       },
       attachEvents(ctx) {
-        CMSEditor.util.attachClick(ctx, '.sling-cms-editor .action-button', function (event) {
+        CMSEditor.util.attachClick(ctx, '.sling-cms-editor .action-button', (event) => {
           event.preventDefault();
           CMSEditor.ui.showModal(this.href, this.title);
         });
@@ -293,7 +293,7 @@ if (!window.CMSEditor) {
     },
   };
   window.CMSEditor = CMSEditor;
-  window.onbeforeunload = function () {
+  window.onbeforeunload = () => {
     if (CMSEditor.ui.modalDisplayed) {
       return 'Are you sure you want to leave this page?';
     }

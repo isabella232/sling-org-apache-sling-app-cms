@@ -62,7 +62,7 @@ rava.bind('.file', {
               meter.classList.add('is-success');
             } else {
               meter.classList.add('is-danger');
-              console.warn('Failed to upload %s, recieved message %s', file.name, text);
+              console.warn('Failed to upload %s, recieved message %s', file.name, text); // eslint-disable-line no-console
             }
           }
         }, false);
